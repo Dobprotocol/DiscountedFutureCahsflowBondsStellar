@@ -1,0 +1,14 @@
+[package]
+name = "dob-e2e-tests"
+version = "0.1.0"
+edition = "2021"
+
+[[test]]
+name = "e2e_simulation"
+path = "simple_e2e.rs"
+
+[dependencies]
+soroban-sdk = { version = "21.7.0", features = ["testutils"] }
+
+[dev-dependencies]
+soroban-sdk = { version = "21.7.0", features = ["testutils"] }
