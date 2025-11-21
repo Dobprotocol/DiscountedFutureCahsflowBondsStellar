@@ -1,6 +1,6 @@
 #![no_std]
 
-use soroban_sdk::{contract, contractimpl, contracttype, contracterror, token, Address, Env, Symbol};
+use soroban_sdk::{contract, contractimpl, contracttype, contracterror, token, Address, Env, IntoVal, Symbol};
 
 /// Storage keys for the stabilizer contract
 #[contracttype]

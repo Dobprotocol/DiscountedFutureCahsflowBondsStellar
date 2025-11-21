@@ -4,6 +4,20 @@ use soroban_sdk::{
     contract, contractimpl, contracttype, contracterror, token, Address, Env, IntoVal, Symbol, Vec,
 };
 
+/// Integer square root using Newton's method
+fn isqrt(n: i128) -> i128 {
+    if n == 0 {
+        return 0;
+    }
+    let mut x = n;
+    let mut y = (x + 1) / 2;
+    while y < x {
+        x = y;
+        y = (x + n / x) / 2;
+    }
+    x
+}
+
 /// Storage keys for the AMM pool
 #[contracttype]
 #[derive(Clone)]
@@ -239,7 +253,7 @@ impl AmmPool {
         let lp_shares = if total_lp == 0 {
             // First liquidity provider gets shares = sqrt(usdc * dob)
             // Simplified: geometric mean
-            ((usdc_amount * dob_amount) as f64).sqrt() as i128
+            isqrt(usdc_amount * dob_amount)
         } else {
             // Proportional to existing reserves
             let usdc_share = (usdc_amount * total_lp) / usdc_reserve;
@@ -502,7 +516,7 @@ impl AmmPool {
             for i in 0..liquid_nodes.len() {
                 if let Some(ln_address) = liquid_nodes.get(i) {
                     // Request quote from Liquid Node
-                    let quote_result: Result<(i128, u32), _> = env.try_invoke_contract(
+                    let quote_result = env.try_invoke_contract::<(i128, u32), Error>(
                         &ln_address,
                         &Symbol::new(&env, "request_quote"),
                         (dob_for_shortage,).into_val(&env),
