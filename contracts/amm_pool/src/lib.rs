@@ -152,9 +152,10 @@ impl AmmPool {
         env.storage().instance().set(&DataKey::LiquidNodes, &liquid_nodes);
     }
 
-    /// Register a Liquid Node (callable by any LN contract)
+    /// Register a Liquid Node (callable by operator)
     pub fn register_liquid_node(env: Env, node: Address) -> Result<(), Error> {
-        node.require_auth();
+        let operator: Address = env.storage().instance().get(&DataKey::Operator).unwrap();
+        operator.require_auth();
 
         let mut liquid_nodes: Vec<Address> = env
             .storage()
@@ -182,9 +183,10 @@ impl AmmPool {
         Ok(())
     }
 
-    /// Unregister a Liquid Node
+    /// Unregister a Liquid Node (callable by operator)
     pub fn unregister_liquid_node(env: Env, node: Address) -> Result<(), Error> {
-        node.require_auth();
+        let operator: Address = env.storage().instance().get(&DataKey::Operator).unwrap();
+        operator.require_auth();
 
         let mut liquid_nodes: Vec<Address> = env
             .storage()
@@ -382,8 +384,8 @@ impl AmmPool {
         let oracle: Address = env.storage().instance().get(&DataKey::Oracle).unwrap();
         let operator: Address = env.storage().instance().get(&DataKey::Operator).unwrap();
 
-        // Get fair price (NAV) from oracle
-        let fair_price: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "nav"), soroban_sdk::vec![&env]);
+        // Get fair price from oracle
+        let fair_price: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "fair_price"), soroban_sdk::vec![&env]);
 
         // Transfer USDC from buyer to contract
         let usdc_client = token::Client::new(&env, &usdc_token);
@@ -454,7 +456,7 @@ impl AmmPool {
         let oracle: Address = env.storage().instance().get(&DataKey::Oracle).unwrap();
 
         // Get fair price and risk from oracle
-        let fair_price: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "nav"), soroban_sdk::vec![&env]);
+        let fair_price: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "fair_price"), soroban_sdk::vec![&env]);
         let risk: u32 = env.invoke_contract(&oracle, &Symbol::new(&env, "default_risk"), soroban_sdk::vec![&env]);
 
         // Calculate base fee from oracle
@@ -469,6 +471,10 @@ impl AmmPool {
         let usdc_reserve: i128 = env.storage().instance().get(&DataKey::UsdcReserve).unwrap_or(0);
         let dob_reserve: i128 = env.storage().instance().get(&DataKey::DobReserve).unwrap_or(0);
 
+        // Transfer all DOB from seller to this contract first
+        let dob_client = token::Client::new(&env, &dob_token);
+        dob_client.transfer(&seller, &env.current_contract_address(), &dob_amount);
+
         let mut from_pool = 0i128;
         let mut from_liquid_nodes = 0i128;
         let mut liquid_nodes_used = false;
@@ -479,11 +485,7 @@ impl AmmPool {
             // Pool has enough liquidity
             from_pool = usdc_after_fee;
 
-            // Transfer DOB from seller to pool
-            let dob_client = token::Client::new(&env, &dob_token);
-            dob_client.transfer(&seller, &env.current_contract_address(), &dob_amount);
-
-            // Update reserves
+            // Update reserves (DOB was already transferred to contract)
             env.storage().instance().set(&DataKey::UsdcReserve, &(usdc_reserve - usdc_after_fee));
             env.storage().instance().set(&DataKey::DobReserve, &(dob_reserve + dob_amount));
 
@@ -495,8 +497,15 @@ impl AmmPool {
             // BeforeSwap triggers Liquid Node search
 
             let shortage = usdc_after_fee - usdc_reserve;
-            let dob_for_shortage = (shortage * 10_000_000) / fair_price;
-            let dob_for_pool = dob_amount - dob_for_shortage;
+            // Account for LN fee (estimate ~10% fee buffer to ensure enough USDC)
+            // LN will charge 5-30% fee depending on risk, so we request extra DOB
+            let dob_for_shortage_base = (shortage * 10_000_000) / fair_price;
+            let dob_for_shortage = (dob_for_shortage_base * 11000) / 10000; // Add 10% buffer
+            let dob_for_pool = if dob_amount > dob_for_shortage {
+                dob_amount - dob_for_shortage
+            } else {
+                0
+            };
 
             // Get quotes from all registered Liquid Nodes
             let liquid_nodes: Vec<Address> = env
@@ -544,18 +553,15 @@ impl AmmPool {
 
             // Execute swap with pool portion
             if usdc_reserve > 0 && dob_for_pool > 0 {
-                let dob_client = token::Client::new(&env, &dob_token);
-                dob_client.transfer(&seller, &env.current_contract_address(), &dob_for_pool);
-
+                // DOB already in contract, just update reserves
                 env.storage().instance().set(&DataKey::UsdcReserve, &0i128);
                 env.storage().instance().set(&DataKey::DobReserve, &(dob_reserve + dob_for_pool));
 
                 from_pool = usdc_reserve;
             }
 
-            // Execute swap with Liquid Node
-            let dob_client = token::Client::new(&env, &dob_token);
-            dob_client.transfer(&seller, &best_ln.node_address, &dob_for_shortage);
+            // Transfer DOB to Liquid Node from this contract
+            dob_client.transfer(&env.current_contract_address(), &best_ln.node_address, &dob_for_shortage);
 
             // Call Liquid Node to fulfill
             let ln_usdc: i128 = env.invoke_contract(
@@ -578,8 +584,8 @@ impl AmmPool {
 
         let total_usdc_out = from_pool + from_liquid_nodes;
 
-        // Burn DOB tokens
-        let burn_args: Vec<soroban_sdk::Val> = (seller.clone(), dob_amount).into_val(&env);
+        // Burn DOB tokens from this contract (not from seller, since we already transferred them)
+        let burn_args: Vec<soroban_sdk::Val> = (env.current_contract_address(), dob_amount).into_val(&env);
         let _: () = env.invoke_contract(
             &dob_token,
             &Symbol::new(&env, "burn"),
@@ -620,7 +626,7 @@ impl AmmPool {
     pub fn quote_swap_sell(env: Env, dob_amount: i128) -> SwapQuote {
         let oracle: Address = env.storage().instance().get(&DataKey::Oracle).unwrap();
 
-        let fair_price: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "nav"), soroban_sdk::vec![&env]);
+        let fair_price: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "fair_price"), soroban_sdk::vec![&env]);
         let risk: u32 = env.invoke_contract(&oracle, &Symbol::new(&env, "default_risk"), soroban_sdk::vec![&env]);
 
         let base_fee_bps = 300 + (risk / 10);

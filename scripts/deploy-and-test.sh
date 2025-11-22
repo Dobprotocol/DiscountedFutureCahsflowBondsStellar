@@ -114,7 +114,7 @@ stellar contract invoke \
   --send=yes \
   -- initialize \
   --updater $DEPLOYER \
-  --initial_nav 10000000 \
+  --initial_fair_price 10000000 \
   --initial_risk 1000 > /dev/null 2>&1
 
 echo "  Initializing DobToken..."
@@ -317,8 +317,8 @@ stellar contract invoke \
   --network $NETWORK \
   --send=yes \
   -- update \
-  --new_nav 12000000 \
-  --new_default_risk 500 > /dev/null 2>&1
+  --new_fair_price 12000000 \
+  --new_risk 500 > /dev/null 2>&1
 echo -e "  ${GREEN}✅ Oracle updated${NC}"
 
 echo "  Test 8: Buying 500 USDC at new NAV..."

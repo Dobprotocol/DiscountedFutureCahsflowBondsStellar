@@ -6,7 +6,7 @@ use soroban_sdk::{contract, contractimpl, contracttype, contracterror, Address, 
 #[contracttype]
 #[derive(Clone)]
 pub enum DataKey {
-    Nav,          // Net Asset Value (7 decimals: 1.00 = 10000000)
+    FairPrice,    // Fair price per DOB token (7 decimals: 1.00 = 10000000)
     DefaultRisk,  // Default risk in basis points (10000 = 100%)
     Updater,      // Address authorized to update values
 }
@@ -15,7 +15,7 @@ pub enum DataKey {
 #[contracttype]
 #[derive(Clone, Debug)]
 pub struct OracleUpdate {
-    pub nav: i128,
+    pub fair_price: i128,
     pub default_risk: u32,
 }
 
@@ -26,7 +26,7 @@ pub enum Error {
     Unauthorized = 1,
 }
 
-/// DobOracle - Simple push oracle for NAV and default risk
+/// DobOracle - Simple push oracle for fair price and default risk
 /// Perfect for testing and MVP - trusted operator updates values
 #[contract]
 pub struct DobOracle;
@@ -34,7 +34,7 @@ pub struct DobOracle;
 #[contractimpl]
 impl DobOracle {
     /// Initialize the oracle contract
-    pub fn initialize(env: Env, updater: Address, initial_nav: i128, initial_risk: u32) {
+    pub fn initialize(env: Env, updater: Address, initial_fair_price: i128, initial_risk: u32) {
         if env.storage().instance().has(&DataKey::Updater) {
             panic!("Already initialized");
         }
@@ -42,7 +42,7 @@ impl DobOracle {
         updater.require_auth();
 
         env.storage().instance().set(&DataKey::Updater, &updater);
-        env.storage().instance().set(&DataKey::Nav, &initial_nav);
+        env.storage().instance().set(&DataKey::FairPrice, &initial_fair_price);
         env.storage()
             .instance()
             .set(&DataKey::DefaultRisk, &initial_risk);
@@ -50,18 +50,18 @@ impl DobOracle {
         env.events().publish(
             (Symbol::new(&env, "initialized"),),
             OracleUpdate {
-                nav: initial_nav,
+                fair_price: initial_fair_price,
                 default_risk: initial_risk,
             },
         );
     }
 
-    /// Get current NAV (Net Asset Value)
+    /// Get current fair price per DOB token
     /// Returns value with 7 decimals (e.g., 10000000 = 1.00 USDC per token)
-    pub fn nav(env: Env) -> i128 {
+    pub fn fair_price(env: Env) -> i128 {
         env.storage()
             .instance()
-            .get(&DataKey::Nav)
+            .get(&DataKey::FairPrice)
             .unwrap_or(10_000_000) // Default: 1.00 with 7 decimals
     }
 
@@ -75,8 +75,8 @@ impl DobOracle {
             .unwrap_or(1000) // Default: 10%
     }
 
-    /// Update NAV and default risk (only updater can call)
-    pub fn update(env: Env, new_nav: i128, new_default_risk: u32) -> Result<(), Error> {
+    /// Update fair price and default risk (only updater can call)
+    pub fn update(env: Env, new_fair_price: i128, new_default_risk: u32) -> Result<(), Error> {
         let updater: Address = env
             .storage()
             .instance()
@@ -85,15 +85,15 @@ impl DobOracle {
 
         updater.require_auth();
 
-        if new_nav <= 0 {
-            panic!("Invalid NAV");
+        if new_fair_price <= 0 {
+            panic!("Invalid fair price");
         }
 
         if new_default_risk > 10000 {
             panic!("Risk cannot exceed 100%");
         }
 
-        env.storage().instance().set(&DataKey::Nav, &new_nav);
+        env.storage().instance().set(&DataKey::FairPrice, &new_fair_price);
         env.storage()
             .instance()
             .set(&DataKey::DefaultRisk, &new_default_risk);
@@ -101,7 +101,7 @@ impl DobOracle {
         env.events().publish(
             (Symbol::new(&env, "oracle_updated"),),
             OracleUpdate {
-                nav: new_nav,
+                fair_price: new_fair_price,
                 default_risk: new_default_risk,
             },
         );
@@ -170,10 +170,10 @@ mod test {
 
         env.mock_all_auths();
 
-        // Initialize with 1.00 NAV and 10% risk
+        // Initialize with 1.00 fair price and 10% risk
         client.initialize(&updater, &10_000_000, &1000);
 
-        assert_eq!(client.nav(), 10_000_000);
+        assert_eq!(client.fair_price(), 10_000_000);
         assert_eq!(client.default_risk(), 1000);
         assert_eq!(client.updater(), updater);
     }
@@ -190,10 +190,10 @@ mod test {
 
         client.initialize(&updater, &10_000_000, &1000);
 
-        // Update to NAV 1.15 and 7% risk
+        // Update to fair price 1.15 and 7% risk
         client.update(&11_500_000, &700);
 
-        assert_eq!(client.nav(), 11_500_000);
+        assert_eq!(client.fair_price(), 11_500_000);
         assert_eq!(client.default_risk(), 700);
     }
 

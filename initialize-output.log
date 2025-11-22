@@ -1,0 +1,48 @@
+[0;34m=== Initializing DOB Liquidity Contracts ===[0m
+
+Using contracts:
+  TOKEN_ID: CAAFZJDN2TLC2VAKVCPMRTUOY6QLEKMQNGW627PH2OAAI3ST5353HOH4
+  ORACLE_ID: CCV2F5VEATBN5S2ZYZOJ4YHKXBVBBHWSVQCP7Y6ETOAXBJHKZDAYTJYM
+  POOL_ID: CAOHO4YUS3LPQUDWNCDPLEIC5ZMVUIVZ4CQG7OC7LLU3PJZ3IFR3NLCV
+  LN1_ID: CAPJ3AD5NYFYOHBAOYGMSZ4AGQTE7XWMEZVFE3IXNAHVE5FIPUGHYLBY
+  LN2_ID: CAEZLW6AB24W35U3XI7TVYUGEHKAJJT6LHDYEF5NXYMHCHTHNIOZBREW
+  USDC_ID: CDUIQVCZRFFWTCA3HPOHLZS7RIZ33MJWHUMV3KUEYDYG6OUMNUIMXHX2
+  DEPLOYER: GACZ5Q42IZTOIOWSJR4B5SIQ45C4C5VVXEKXRFQ4N2GUWTAN2DOLYLWZ
+
+[0;34m[1/8] Initializing Oracle...[0m
+  Setting NAV: $1.00 (10000000 stroops)
+  Setting Risk: 10% (1000 basis points)
+ℹ️  Signing transaction: bf40ceb0d567cd2ee96fd65e044d59fa983b98f98b8bfb351cf222c96425cdf1
+📅 CCV2F5VEATBN5S2ZYZOJ4YHKXBVBBHWSVQCP7Y6ETOAXBJHKZDAYTJYM - Success - Event: [{"symbol":"initialized"}] = {"map":[{"key":{"symbol":"default_risk"},"val":{"u32":1000}},{"key":{"symbol":"fair_price"},"val":{"i128":"10000000"}}]}
+
+[0;32m✅ Oracle initialized[0m
+
+[0;34m[2/8] Initializing DobToken...[0m
+ℹ️  Signing transaction: c1a8f5c31874b4671a63f42accf27366b3e234edc6be6a91eeb13697b5cf42d6
+
+[0;32m✅ DobToken initialized[0m
+
+[0;34m[3/8] Initializing AMM Pool...[0m
+ℹ️  Signing transaction: 76f240d98378a15d7942cddb7926e27fc4bf5338320b41757fec3154ec504b5a
+
+[0;32m✅ AMM Pool initialized[0m
+
+[0;34m[4/8] Initializing Liquid Node #1...[0m
+ℹ️  Signing transaction: 63d214ab46675a974f7b386ca28ebadc6816f3fae8f5d5254bb8b1a91639450f
+
+[0;32m✅ Liquid Node #1 initialized[0m
+
+[0;34m[5/8] Initializing Liquid Node #2...[0m
+ℹ️  Signing transaction: 5cccd9b147b4ecb60a6c17dec7f645ef1d67a9a339ba078fd405db4ff2976eca
+
+[0;32m✅ Liquid Node #2 initialized[0m
+
+[0;34m[6/8] Minting test USDC...[0m
+  Minting 200,000 USDC to deployer...
+❌ error: transaction simulation failed: HostError: Error(Contract, #2)
+
+Event log (newest first):
+   0: [Diagnostic Event] contract:CDUIQVCZRFFWTCA3HPOHLZS7RIZ33MJWHUMV3KUEYDYG6OUMNUIMXHX2, topics:[error, Error(Contract, #2)], data:"operation invalid on issuer"
+   1: [Diagnostic Event] topics:[fn_call, CDUIQVCZRFFWTCA3HPOHLZS7RIZ33MJWHUMV3KUEYDYG6OUMNUIMXHX2, mint], data:[GACZ5Q42IZTOIOWSJR4B5SIQ45C4C5VVXEKXRFQ4N2GUWTAN2DOLYLWZ, 2000000000000]
+
+[0;31mFailed to mint USDC[0m

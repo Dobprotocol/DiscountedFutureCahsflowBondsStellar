@@ -114,7 +114,7 @@ impl LiquidNodeStabilizer {
         let usdc_token: Address = env.storage().instance().get(&DataKey::UsdcToken).unwrap();
 
         // Get NAV and risk from oracle
-        let nav: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "nav"), soroban_sdk::vec![&env]);
+        let nav: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "fair_price"), soroban_sdk::vec![&env]);
         let risk: u32 = env.invoke_contract(&oracle, &Symbol::new(&env, "default_risk"), soroban_sdk::vec![&env]);
 
         // Dynamic fee calculation based on risk
@@ -163,7 +163,7 @@ impl LiquidNodeStabilizer {
         let usdc_token: Address = env.storage().instance().get(&DataKey::UsdcToken).unwrap();
 
         // Get NAV and risk from oracle
-        let nav: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "nav"), soroban_sdk::vec![&env]);
+        let nav: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "fair_price"), soroban_sdk::vec![&env]);
         let risk: u32 = env.invoke_contract(&oracle, &Symbol::new(&env, "default_risk"), soroban_sdk::vec![&env]);
 
         // Calculate fee (same logic as request_quote)
@@ -228,7 +228,7 @@ impl LiquidNodeStabilizer {
         let oracle: Address = env.storage().instance().get(&DataKey::Oracle).unwrap();
 
         // Get NAV and risk from oracle
-        let nav: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "nav"), soroban_sdk::vec![&env]);
+        let nav: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "fair_price"), soroban_sdk::vec![&env]);
         let risk: u32 = env.invoke_contract(&oracle, &Symbol::new(&env, "default_risk"), soroban_sdk::vec![&env]);
 
         // Calculate fee
@@ -282,7 +282,7 @@ impl LiquidNodeStabilizer {
     pub fn quote_liquidity_direct(env: Env, dob_amount: i128) -> (i128, u32) {
         let oracle: Address = env.storage().instance().get(&DataKey::Oracle).unwrap();
 
-        let nav: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "nav"), soroban_sdk::vec![&env]);
+        let nav: i128 = env.invoke_contract(&oracle, &Symbol::new(&env, "fair_price"), soroban_sdk::vec![&env]);
         let risk: u32 = env.invoke_contract(&oracle, &Symbol::new(&env, "default_risk"), soroban_sdk::vec![&env]);
 
         let fee_bps = if risk < 1500 {

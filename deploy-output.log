@@ -1,0 +1,237 @@
+[0;34m╔════════════════════════════════════════════════════╗[0m
+[0;34m║  DOB Liquidity - Stellar Testnet Deployment       ║[0m
+[0;34m╚════════════════════════════════════════════════════╝[0m
+
+[0;34m[1/9] Building contracts...[0m
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/kai/Escritorio/PROGRAMACION/dob-soroban-liquidity/contracts/token/Cargo.toml
+workspace: /home/kai/Escritorio/PROGRAMACION/dob-soroban-liquidity/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/kai/Escritorio/PROGRAMACION/dob-soroban-liquidity/contracts/oracle/Cargo.toml
+workspace: /home/kai/Escritorio/PROGRAMACION/dob-soroban-liquidity/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/kai/Escritorio/PROGRAMACION/dob-soroban-liquidity/contracts/primary_market/Cargo.toml
+workspace: /home/kai/Escritorio/PROGRAMACION/dob-soroban-liquidity/Cargo.toml
+warning: profiles for the non root package will be ignored, specify profiles at the workspace root:
+package:   /home/kai/Escritorio/PROGRAMACION/dob-soroban-liquidity/contracts/stabilizer/Cargo.toml
+workspace: /home/kai/Escritorio/PROGRAMACION/dob-soroban-liquidity/Cargo.toml
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+  --> contracts/stabilizer/src/lib.rs:81:14
+   |
+81 |             .publish((Symbol::new(&env, "funded_usdc"), funder), amount);
+   |              ^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/stabilizer/src/lib.rs:100:14
+    |
+100 |             .publish((Symbol::new(&env, "funded_dob"), funder), amount);
+    |              ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/stabilizer/src/lib.rs:200:22
+    |
+200 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/stabilizer/src/lib.rs:268:22
+    |
+268 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/stabilizer/src/lib.rs:324:22
+    |
+324 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/stabilizer/src/lib.rs:376:22
+    |
+376 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/primary_market/src/lib.rs:148:22
+    |
+148 |         env.events().publish(
+    |                      ^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/primary_market/src/lib.rs:210:22
+    |
+210 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/primary_market/src/lib.rs:315:14
+    |
+315 |             .publish((Symbol::new(&env, "funded"), funder), amount);
+    |              ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/amm_pool/src/lib.rs:177:22
+    |
+177 |         env.events().publish(
+    |                      ^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/amm_pool/src/lib.rs:215:22
+    |
+215 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/amm_pool/src/lib.rs:293:22
+    |
+293 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/amm_pool/src/lib.rs:358:22
+    |
+358 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/amm_pool/src/lib.rs:429:22
+    |
+429 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/amm_pool/src/lib.rs:603:22
+    |
+603 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+  --> contracts/oracle/src/lib.rs:50:22
+   |
+50 |         env.events().publish(
+   |                      ^^^^^^^
+   |
+   = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/oracle/src/lib.rs:101:22
+    |
+101 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/oracle/src/lib.rs:132:22
+    |
+132 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/token/src/lib.rs:120:22
+    |
+120 |         env.events().publish(
+    |                      ^^^^^^^
+    |
+    = note: `#[warn(deprecated)]` on by default
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/token/src/lib.rs:136:22
+    |
+136 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/token/src/lib.rs:192:22
+    |
+192 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/token/src/lib.rs:224:22
+    |
+224 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: use of deprecated method `soroban_sdk::events::Events::publish`: use the #[contractevent] macro on a contract event type
+   --> contracts/token/src/lib.rs:260:22
+    |
+260 |         env.events().publish(
+    |                      ^^^^^^^
+
+warning: `dob-stabilizer` (lib) generated 6 warnings
+warning: `dob-primary-market` (lib) generated 3 warnings
+warning: `dob-amm-pool` (lib) generated 6 warnings
+warning: `dob-oracle` (lib) generated 3 warnings
+warning: `dob-token` (lib) generated 5 warnings
+    Finished `release` profile [optimized] target(s) in 0.37s
+[0;32m✅ Contracts built[0m
+
+[0;34m[2/9] Setting up testnet identity...[0m
+Using existing identity 'deployer'
+[0;32m✅ Deployer address: GACZ5Q42IZTOIOWSJR4B5SIQ45C4C5VVXEKXRFQ4N2GUWTAN2DOLYLWZ[0m
+
+[0;34m[3/9] Funding testnet account...[0m
+[0;32m✅ Account funded with 10,000 XLM[0m
+
+[0;34m[4/9] Deploying contracts...[0m
+  Deploying DobToken...
+ℹ️  Skipping install because wasm already installed
+ℹ️  Using wasm hash 4b9c8ee50e72d18a16122e7b3461d5863f27b9bba682db15f9f94c52262cc90d
+ℹ️  Simulating deploy transaction…
+ℹ️  Transaction hash is aa12ba08931647e5022e8c4dffe6801b2c978a1a1f0fe5045b0893802f229e0e
+🔗 https://stellar.expert/explorer/testnet/tx/aa12ba08931647e5022e8c4dffe6801b2c978a1a1f0fe5045b0893802f229e0e
+ℹ️  Signing transaction: aa12ba08931647e5022e8c4dffe6801b2c978a1a1f0fe5045b0893802f229e0e
+🌎 Submitting deploy transaction…
+🔗 https://stellar.expert/explorer/testnet/contract/CAAFZJDN2TLC2VAKVCPMRTUOY6QLEKMQNGW627PH2OAAI3ST5353HOH4
+✅ Deployed!
+  [0;32m✅ Token: CAAFZJDN2TLC2VAKVCPMRTUOY6QLEKMQNGW627PH2OAAI3ST5353HOH4[0m
+  Deploying DobOracle...
+ℹ️  Skipping install because wasm already installed
+ℹ️  Using wasm hash b2ea76134d5cfc2ac4e7d28e9dd329ff9094fcd0448c82a4478fa174b43e01fe
+ℹ️  Simulating deploy transaction…
+ℹ️  Transaction hash is 9cb033233cd01cc7a2970f950da00ebf211c97914b915803896827d7087ef904
+🔗 https://stellar.expert/explorer/testnet/tx/9cb033233cd01cc7a2970f950da00ebf211c97914b915803896827d7087ef904
+ℹ️  Signing transaction: 9cb033233cd01cc7a2970f950da00ebf211c97914b915803896827d7087ef904
+🌎 Submitting deploy transaction…
+🔗 https://stellar.expert/explorer/testnet/contract/CCV2F5VEATBN5S2ZYZOJ4YHKXBVBBHWSVQCP7Y6ETOAXBJHKZDAYTJYM
+✅ Deployed!
+  [0;32m✅ Oracle: CCV2F5VEATBN5S2ZYZOJ4YHKXBVBBHWSVQCP7Y6ETOAXBJHKZDAYTJYM[0m
+  Deploying AMM Pool...
+ℹ️  Skipping install because wasm already installed
+ℹ️  Using wasm hash 694876d19586208ccab787dbb46a33dea4a92a25ce3147b60eb64751ec49e008
+ℹ️  Simulating deploy transaction…
+ℹ️  Transaction hash is 8bce2212349a52f4cdae5adc341d3fdd80252b40be1b3fadf7e06e4512554d38
+🔗 https://stellar.expert/explorer/testnet/tx/8bce2212349a52f4cdae5adc341d3fdd80252b40be1b3fadf7e06e4512554d38
+ℹ️  Signing transaction: 8bce2212349a52f4cdae5adc341d3fdd80252b40be1b3fadf7e06e4512554d38
+🌎 Submitting deploy transaction…
+🔗 https://stellar.expert/explorer/testnet/contract/CAOHO4YUS3LPQUDWNCDPLEIC5ZMVUIVZ4CQG7OC7LLU3PJZ3IFR3NLCV
+✅ Deployed!
+  [0;32m✅ AMM Pool: CAOHO4YUS3LPQUDWNCDPLEIC5ZMVUIVZ4CQG7OC7LLU3PJZ3IFR3NLCV[0m
+  Deploying LiquidNode #1...
+ℹ️  Skipping install because wasm already installed
+ℹ️  Using wasm hash 739e05e31b67102c638e3d5187ea609ba6dd12f984c133ae7f712c98b5ffcc1b
+ℹ️  Simulating deploy transaction…
+ℹ️  Transaction hash is 955403a2dba319f75f89f3a0b64fe4842831e7bb009f3f65adf2b29f4c73e299
+🔗 https://stellar.expert/explorer/testnet/tx/955403a2dba319f75f89f3a0b64fe4842831e7bb009f3f65adf2b29f4c73e299
+ℹ️  Signing transaction: 955403a2dba319f75f89f3a0b64fe4842831e7bb009f3f65adf2b29f4c73e299
+🌎 Submitting deploy transaction…
+🔗 https://stellar.expert/explorer/testnet/contract/CAPJ3AD5NYFYOHBAOYGMSZ4AGQTE7XWMEZVFE3IXNAHVE5FIPUGHYLBY
+✅ Deployed!
+  [0;32m✅ Liquid Node 1: CAPJ3AD5NYFYOHBAOYGMSZ4AGQTE7XWMEZVFE3IXNAHVE5FIPUGHYLBY[0m
+  Deploying LiquidNode #2...
+ℹ️  Skipping install because wasm already installed
+ℹ️  Using wasm hash 739e05e31b67102c638e3d5187ea609ba6dd12f984c133ae7f712c98b5ffcc1b
+ℹ️  Simulating deploy transaction…
+ℹ️  Transaction hash is 9c73b6c47c3c867d1bc3e6f255768970ff2df724bd1b7b62a0272dae0e8fd809
+🔗 https://stellar.expert/explorer/testnet/tx/9c73b6c47c3c867d1bc3e6f255768970ff2df724bd1b7b62a0272dae0e8fd809
+ℹ️  Signing transaction: 9c73b6c47c3c867d1bc3e6f255768970ff2df724bd1b7b62a0272dae0e8fd809
+🌎 Submitting deploy transaction…
+🔗 https://stellar.expert/explorer/testnet/contract/CAEZLW6AB24W35U3XI7TVYUGEHKAJJT6LHDYEF5NXYMHCHTHNIOZBREW
+✅ Deployed!
+  [0;32m✅ Liquid Node 2: CAEZLW6AB24W35U3XI7TVYUGEHKAJJT6LHDYEF5NXYMHCHTHNIOZBREW[0m
+  Deploying test USDC...
